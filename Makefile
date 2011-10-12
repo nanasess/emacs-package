@@ -4,27 +4,27 @@
 #
 #################################################################################
 
-PREFIX = /Users/nanasess/src/cocoa-emacs
+PREFIX = /Users/nanasess/src/carbon-emacs
 RM = /bin/rm -rfv
 TAR = tar xvzf
 CURL = curl -O
 SOURCE_DIR = $(EMACS_SRC) $(APEL_SRC) $(SKK_SRC) $(MEW_SRC) $(W3M_SRC) $(HOWM_SRC)
 
 ## Emacs Variables
-EMACS_SRC = emacs-24.0.90
-EMACS_APP = $(PREFIX)/$(EMACS_SRC)/nextstep/Emacs.app
+EMACS_SRC = emacs-23
+EMACS_APP = $(PREFIX)/$(EMACS_SRC)/mac/Emacs.app
 EMACS = $(EMACS_APP)/Contents/MacOS/Emacs
 EMACS_PREFIX = $(EMACS_APP)/Contents/Resources
 EMACS_BINDIR = $(EMACS_APP)/Contents/MacOS/bin
-INFO_DIR = $(EMACS_PREFIX)/info
-SITE_DIR = $(EMACS_PREFIX)/site-lisp
-ETC_DIR = $(EMACS_PREFIX)/etc
+INFO_DIR = $(EMACS_PREFIX)/share/emacs/info
+SITE_DIR = $(EMACS_PREFIX)/share/emacs/site-lisp
+ETC_DIR = $(EMACS_PREFIX)/share/emacs/23.3.50/etc
 
 # SKK Variables
 SKK_BASE = skk
 SKK_SRC = $(SKK_BASE)/main
 SKK_CFG = SKK-CFG
-SKK_DATADIR = $(EMACS_PREFIX)/etc/skk
+SKK_DATADIR = $(ETC_DIR)/skk
 SKK_INFODIR = $(INFO_DIR)
 SKK_LISPDIR = $(SITE_DIR)/skk
 SKK_SET_JISYO = t
@@ -102,8 +102,9 @@ checkoutnavi2ch:
 
 emacsbuild:
 	cd $(EMACS_SRC); \
-	./configure --with-ns \
-	--without-dbus; \
+	./configure	--prefix=$(EMACS_PREFIX) \
+			--with-mac --without-x --without-dbus \
+			--enable-mac-app=~/Applications; \
 	make
 
 emacsinstall: emacsbuild
