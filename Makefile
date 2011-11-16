@@ -63,9 +63,9 @@ update:
 
 install: emacsinstall installlib
 
-buildlib: skkbuild dvcbuild mewbuild w3mbuild navi2chbuild
+buildlib: skkbuild mewbuild w3mbuild navi2chbuild
 
-installlib: skkinstall dvcinstall mewinstall w3minstall navi2chinstall
+installlib: skkinstall mewinstall w3minstall navi2chinstall
 
 cleanall: emacsdistclean skkclean skkcfgclean mewclean w3mclean navi2chclean
 
@@ -103,13 +103,14 @@ checkoutnavi2ch:
 emacsbuild:
 	cd $(EMACS_SRC); \
 	./configure	--prefix=$(EMACS_PREFIX) \
-			--with-mac --without-x --without-dbus \
-			--enable-mac-app=~/Applications; \
+			--with-mac --without-x --without-dbus; \
 	make
 
 emacsinstall: emacsbuild
 	cd $(EMACS_SRC); \
-	make install
+	make install; \
+	cp $(EMACS_PREFIX)/bin/* $(EMACS_BINDIR); \
+	cp $(EMACS_PREFIX)/libexec/emacs/*/*/* $(EMACS_BINDIR);
 
 emacsclean:
 	cd $(EMACS_SRC); \
@@ -181,11 +182,15 @@ mewbuild:
 	./configure	--with-emacs=$(EMACS) --prefix=$(PREFIX) \
 			--bindir=$(EMACS_BINDIR) --with-elispdir=$(SITE_DIR)/mew \
 			--with-etcdir=$(ETC_DIR) --infodir=$(INFO_DIR) \
-	make
+	make; 
+	cd $(MEW_SRC)/bin/hs; \
+	cabal install
 
 mewinstall: mewbuild
 	cd $(MEW_SRC); \
-	make install
+	make install; 
+	cp $(MEW_SRC)/bin/hs/dist/build/smew/smew $(EMACS_BINDIR); \
+	cp $(MEW_SRC)/bin/hs/dist/build/cmew/cmew $(EMACS_BINDIR);
 
 mewclean:
 	cd $(MEW_SRC); \
