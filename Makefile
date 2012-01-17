@@ -18,7 +18,7 @@ EMACS_PREFIX = $(EMACS_APP)/Contents/Resources
 EMACS_BINDIR = $(EMACS_APP)/Contents/MacOS/bin
 INFO_DIR = $(EMACS_PREFIX)/share/emacs/info
 SITE_DIR = $(EMACS_PREFIX)/share/emacs/site-lisp
-ETC_DIR = $(EMACS_PREFIX)/share/emacs/23.3.50/etc
+ETC_DIR = $(EMACS_PREFIX)/share/emacs/23.3.90/etc
 
 # SKK Variables
 SKK_BASE = skk
@@ -102,7 +102,7 @@ checkoutnavi2ch:
 
 emacsbuild:
 	cd $(EMACS_SRC); \
-	./configure	--prefix=$(EMACS_PREFIX) \
+	CC="clang -fobjc-arc" ./configure	--prefix=$(EMACS_PREFIX) \
 			--with-mac --without-x --without-dbus; \
 	make
 
@@ -188,7 +188,8 @@ mewbuild:
 
 mewinstall: mewbuild
 	cd $(MEW_SRC); \
-	make install; 
+	make install;
+	chmod -R +w $(EMACS_BINDIR);
 	cp $(MEW_SRC)/bin/hs/dist/build/smew/smew $(EMACS_BINDIR); \
 	cp $(MEW_SRC)/bin/hs/dist/build/cmew/cmew $(EMACS_BINDIR);
 
