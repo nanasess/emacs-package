@@ -11,14 +11,14 @@ CURL = curl -O
 SOURCE_DIR = $(EMACS_SRC) $(APEL_SRC) $(SKK_SRC) $(MEW_SRC) $(W3M_SRC) $(HOWM_SRC)
 
 ## Emacs Variables
-EMACS_SRC = emacs-23
+EMACS_SRC = emacs-24
 EMACS_APP = $(PREFIX)/$(EMACS_SRC)/mac/Emacs.app
 EMACS = $(EMACS_APP)/Contents/MacOS/Emacs
 EMACS_PREFIX = $(EMACS_APP)/Contents/Resources
 EMACS_BINDIR = $(EMACS_APP)/Contents/MacOS/bin
 INFO_DIR = $(EMACS_PREFIX)/share/emacs/info
 SITE_DIR = $(EMACS_PREFIX)/share/emacs/site-lisp
-ETC_DIR = $(EMACS_PREFIX)/share/emacs/23.4/etc
+ETC_DIR = $(EMACS_PREFIX)/share/emacs/24.1/etc
 
 # SKK Variables
 SKK_BASE = skk
@@ -62,6 +62,8 @@ update:
 	cd $(MEW_SRC) && git pull
 
 install: emacsinstall installlib
+	cp $(EMACS_PREFIX)/bin/* $(EMACS_BINDIR); \
+	cp $(EMACS_PREFIX)/libexec/emacs/*/*/* $(EMACS_BINDIR);
 
 buildlib: skkbuild mewbuild w3mbuild navi2chbuild
 
@@ -108,9 +110,7 @@ emacsbuild:
 
 emacsinstall: emacsbuild
 	cd $(EMACS_SRC); \
-	make install; \
-	cp $(EMACS_PREFIX)/bin/* $(EMACS_BINDIR); \
-	cp $(EMACS_PREFIX)/libexec/emacs/*/*/* $(EMACS_BINDIR);
+	make install
 
 emacsclean:
 	cd $(EMACS_SRC); \
