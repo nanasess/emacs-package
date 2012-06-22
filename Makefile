@@ -105,7 +105,8 @@ checkoutnavi2ch:
 emacsbuild:
 	cd $(EMACS_SRC); \
 	CC="clang -fobjc-arc" ./configure	--prefix=$(EMACS_PREFIX) \
-			--with-mac --without-x --without-dbus; \
+			--with-mac --without-x --without-dbus \
+			--enable-mac-app=~/Applications
 	make
 
 emacsinstall: emacsbuild
