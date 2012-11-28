@@ -18,7 +18,7 @@ EMACS_PREFIX = $(EMACS_APP)/Contents/Resources
 EMACS_BINDIR = $(EMACS_APP)/Contents/MacOS/bin
 INFO_DIR = $(EMACS_PREFIX)/share/emacs/info
 SITE_DIR = $(EMACS_PREFIX)/share/emacs/site-lisp
-ETC_DIR = $(EMACS_PREFIX)/share/emacs/24.1/etc
+ETC_DIR = $(EMACS_PREFIX)/share/emacs/24.2.90/etc
 
 # SKK Variables
 SKK_BASE = skk
