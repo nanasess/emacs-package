@@ -4,14 +4,14 @@
 #
 #################################################################################
 
-PREFIX = /Users/nanasess/src/carbon-emacs
+PREFIX = /Users/nanasess/git-repos/emacs-package
 RM = /bin/rm -rfv
 TAR = tar xvzf
 CURL = curl -O
 SOURCE_DIR = $(EMACS_SRC) $(APEL_SRC) $(SKK_SRC) $(MEW_SRC) $(W3M_SRC) $(HOWM_SRC)
 
 ## Emacs Variables
-EMACS_SRC = emacs-24
+EMACS_SRC = emacs
 EMACS_APP = $(PREFIX)/$(EMACS_SRC)/mac/Emacs.app
 EMACS = $(EMACS_APP)/Contents/MacOS/Emacs
 EMACS_PREFIX = $(EMACS_APP)/Contents/Resources

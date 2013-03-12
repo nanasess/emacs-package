@@ -1,0 +1,6 @@
+[submodule "emacs"]
+	path = emacs
+	url = git@github.com:nanasess/emacs.git
+[submodule "Mew"]
+	path = Mew
+	url = git://github.com/kazu-yamamoto/Mew.git
