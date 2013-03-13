@@ -4,21 +4,22 @@
 #
 #################################################################################
 
-PREFIX = /Users/nanasess/git-repos/emacs-package
+PREFIX = $(shell pwd)
 RM = /bin/rm -rfv
 TAR = tar xvzf
 CURL = curl -O
-SOURCE_DIR = $(EMACS_SRC) $(APEL_SRC) $(SKK_SRC) $(MEW_SRC) $(W3M_SRC) $(HOWM_SRC)
+SOURCE_DIR = $(EMACS_SRC) $(SKK_SRC) $(MEW_SRC) $(W3M_SRC)
 
 ## Emacs Variables
 EMACS_SRC = emacs
+EMACS_VERSION = 24.3		# see. PACKAGE_VERSION
 EMACS_APP = $(PREFIX)/$(EMACS_SRC)/mac/Emacs.app
 EMACS = $(EMACS_APP)/Contents/MacOS/Emacs
 EMACS_PREFIX = $(EMACS_APP)/Contents/Resources
 EMACS_BINDIR = $(EMACS_APP)/Contents/MacOS/bin
 INFO_DIR = $(EMACS_PREFIX)/share/emacs/info
 SITE_DIR = $(EMACS_PREFIX)/share/emacs/site-lisp
-ETC_DIR = $(EMACS_PREFIX)/share/emacs/24.3/etc # see. PACKAGE_VERSION
+ETC_DIR = $(EMACS_PREFIX)/share/emacs/$(EMACS_VERSION)/etc
 
 # SKK Variables
 SKK_BASE = skk
@@ -29,14 +30,8 @@ SKK_INFODIR = $(INFO_DIR)
 SKK_LISPDIR = $(SITE_DIR)/skk
 SKK_SET_JISYO = t
 
-# migemo Variables
-MIGEMO_SRC = migemo
-
 # Mew Variables
 MEW_SRC = mew
-
-# DVC Variables
-DVC_SRC = dvc
 
 # W3M Variables
 W3M_SRC = emacs-w3m
@@ -55,11 +50,8 @@ all:
 
 update:
 	cd $(SKK_SRC) && cvs -q update -dP
-#	cd $(MIGEMO_SRC) && cvs -q update -dP
 	cd $(W3M_SRC) && cvs -q update -dP
 	cd $(NAVI2CH_SRC) && cvs -q update -dP
-	cd $(EMACS_SRC) && bzr pull
-	cd $(MEW_SRC) && git pull
 
 install: emacsinstall installlib
 	cp $(EMACS_PREFIX)/bin/* $(EMACS_BINDIR); \
@@ -74,25 +66,16 @@ installlib: skkinstall mewinstall w3minstall navi2chinstall
 cleanall: emacsdistclean skkclean skkcfgclean mewclean w3mclean navi2chclean
 
 sourceclean:
-	$(RM) $(SOURCE_DIR) $(HOWM_SRC).* $(MUSE_SRC).*
+	$(RM) $(SOURCE_DIR)
 
-checkout: sourceclean checkoutemacs checkoutskk checkoutmew checkoutw3m checkoutnavi2ch
+checkout: sourceclean checkoutskk checkoutw3m checkoutnavi2ch
 
 ################################################################################
 # checkouts
 ################################################################################
 
-checkoutemacs:
-	cvs -z3 -d:pserver:anonymous@cvs.savannah.gnu.org:/sources/emacs co $(EMACS_SRC)
-
 checkoutskk:
 	cvs -d :pserver:guest@openlab.jp:/circus/cvsroot checkout $(SKK_SRC)
-
-checkoutmigemo:
-	cvs -z3 -d:pserver:anonymous@migemo.cvs.sourceforge.net:/cvsroot/migemo co $(MIGEMO_SRC)
-
-checkoutmew:
-	cvs -d :pserver:anoncvs@anoncvs.mew.org:/cvsmew co $(MEW_SRC)
 
 checkoutw3m:
 	cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co $(W3M_SRC)
@@ -154,27 +137,6 @@ skkclean:
 	cd $(SKK_SRC); \
 	make clean EMACS=$(EMACS)
 
-################################################################################
-# migemo targets
-################################################################################
-
-migemobuild:
-	cp $(SKK_BASE)/dic/SKK-JISYO.L $(MIGEMO_SRC)
-	cd $(MIGEMO_SRC); \
-	./configure	--with-emacs=$(EMACS) --prefix=$(EMACS_PREFIX) \
-			--bindir=$(EMACS_BINDIR) \
-			--with-lispdir=$(SITE_DIR)/migemo \
-			--sysconfdir=$(ETC_DIR) --infodir=$(INFO_DIR) \
-	make
-
-migemoinstall: migemobuild
-	cd $(MIGEMO_SRC); \
-	make install rubydir=/Library/Ruby/Site/1.8
-
-migemoclean:
-	cd $(MIGEMO_SRC); \
-	make distclean
-
 
 ################################################################################
 # mew targets
@@ -198,26 +160,6 @@ mewinstall: mewbuild
 
 mewclean:
 	cd $(MEW_SRC); \
-	make distclean
-
-################################################################################
-# dvc targets
-################################################################################
-
-dvcbuild:
-	cd $(DVC_SRC); \
-	autoconf; \
-	./configure	--with-emacs=$(EMACS) --prefix=$(PREFIX) \
-			--bindir=$(EMACS_BINDIR) --with-lispdir=$(SITE_DIR)/dvc \
-			--sysconfdir=$(ETC_DIR) --infodir=$(INFO_DIR) \
-	make
-
-dvcinstall: dvcbuild
-	cd $(DVC_SRC); \
-	make install
-
-dvcclean:
-	cd $(DVC_SRC); \
 	make distclean
 
 ################################################################################
