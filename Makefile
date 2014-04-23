@@ -71,7 +71,7 @@ emacsbuild:
 	CC="clang -fobjc-arc" ./configure	--prefix=$(EMACS_PREFIX) \
 			--with-mac --without-x --without-dbus \
 			--enable-mac-app=~/Applications
-	make
+	make -j $(shell sysctl -n hw.availcpu)
 
 emacsinstall: emacsbuild
 	cd $(EMACS_SRC); \
