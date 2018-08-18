@@ -68,11 +68,12 @@ checkoutskk:
 
 emacsbuild:
 	cd $(EMACS_SRC); \
-	CC="clang -fobjc-arc" ./configure	--prefix=$(EMACS_PREFIX) \
+	CC="clang -fobjc-arc -Ofast -march=native" ./configure	--prefix=$(EMACS_PREFIX) \
 			--with-mac --without-x --without-dbus \
-			--with-gnutls \
+			--with-gnutls --with-modules --with-rsvg \
+			--with-imagemagick \
 			--enable-mac-app=~/Applications
-	make -j $(shell sysctl -n hw.availcpu)
+	make -j $(shell sysctl -n hw.activecpu)
 
 emacsinstall: emacsbuild
 	cd $(EMACS_SRC); \
