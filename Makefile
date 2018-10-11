@@ -68,7 +68,8 @@ checkoutskk:
 
 emacsbuild:
 	cd $(EMACS_SRC); \
-	CC="clang -fobjc-arc -Ofast -march=native" ./configure	--prefix=$(EMACS_PREFIX) \
+	CC="clang -fobjc-arc" CFLAGS="-Ofast -march=x86-64 -mtune=corei5 `xml2-config --cflags`" \
+			./configure	--prefix=$(EMACS_PREFIX) \
 			--with-mac --without-x --without-dbus \
 			--with-gnutls --with-modules --with-rsvg \
 			--with-imagemagick \
