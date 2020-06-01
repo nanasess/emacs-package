@@ -68,12 +68,16 @@ checkoutskk:
 
 emacsbuild:
 	cd $(EMACS_SRC); \
-	CC="clang -fobjc-arc" CFLAGS="-Ofast -march=x86-64 -mtune=corei5 `xml2-config --cflags`" \
+	MACSDK=`xcrun --show-sdk-path` \
+        export LIBXML2_CFLAGS="-I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/libxml2"; \
+        export LIBXML2_LIBS="-lxml2"; \
+	CC="clang -fobjc-arc" \
+        CFLAGS="-Ofast -march=x86-64 -mtune=corei7" \
 			./configure	--prefix=$(EMACS_PREFIX) \
 			--with-mac --without-x --without-dbus \
 			--with-gnutls --with-modules --with-rsvg \
 			--with-imagemagick \
-			--enable-mac-app=~/Applications
+			--enable-mac-app=~/Applications; \
 	make -j $(shell sysctl -n hw.activecpu)
 
 emacsinstall: emacsbuild
