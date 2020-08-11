@@ -72,7 +72,7 @@ emacsbuild:
         export LIBXML2_CFLAGS="-I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/libxml2"; \
         export LIBXML2_LIBS="-lxml2"; \
 	CC="clang -fobjc-arc" \
-        CFLAGS="-Ofast -march=x86-64 -mtune=corei7" \
+        CFLAGS="-O -march=x86-64 -mtune=corei7" \
 			./configure	--prefix=$(EMACS_PREFIX) \
 			--with-mac --without-x --without-dbus \
 			--with-gnutls --with-modules --with-rsvg \
