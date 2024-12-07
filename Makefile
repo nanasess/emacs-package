@@ -71,12 +71,15 @@ emacsbuild:
 	MACSDK=`xcrun --show-sdk-path` \
         export LIBXML2_CFLAGS="-I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/libxml2"; \
         export LIBXML2_LIBS="-lxml2"; \
+	export LIBRARY_PATH="$(brew --prefix libgccjit)/lib/gcc/current"; \
 	CC="clang -fobjc-arc" \
         CFLAGS="-O -march=x86-64 -mtune=corei7" \
-			./configure	--prefix=$(EMACS_PREFIX) \
+			./configure --prefix=$(EMACS_PREFIX) \
 			--with-mac --without-x --without-dbus \
 			--with-gnutls --with-modules --with-rsvg \
 			--with-imagemagick \
+			--with-xwidgets \
+			--with-native-compilation=aot \
 			--enable-mac-app=~/Applications; \
 	make -j $(shell sysctl -n hw.activecpu)
 
